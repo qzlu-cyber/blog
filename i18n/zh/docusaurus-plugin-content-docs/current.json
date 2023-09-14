@@ -1,0 +1,18 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.note.category.CPP": {
+    "message": "CPP",
+    "description": "The label for category CPP in sidebar note"
+  },
+  "sidebar.note.category.CG": {
+    "message": "CG",
+    "description": "The label for category CG in sidebar note"
+  },
+  "sidebar.note.category.Rendering": {
+    "message": "Rendering",
+    "description": "The label for category Rendering in sidebar note"
+  }
+}
