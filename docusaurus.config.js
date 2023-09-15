@@ -1,4 +1,6 @@
 const path = require('path')
+const math = require('remark-math');
+const katex = require('rehype-katex');
 // const beian = ''
 
 const announcementBarContent = ''
@@ -183,6 +185,8 @@ const config = {
         docs: {
           path: 'docs',
           sidebarPath: 'sidebars.js',
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
         },
         blog: false,
         theme: {
@@ -224,6 +228,8 @@ const config = {
           title: 'Kaesar',
           copyright: `<p>Copyright © ${new Date().getFullYear()} Built with Docusaurus and <a href="https://kuizuo.cn/">愧怍</a></p>`,
         },
+        remarkPlugins: [math],
+        rehypePlugins: [katex]
       },
     ],
     [
@@ -261,7 +267,15 @@ const config = {
       },
     ],
   ],
-  stylesheets: [],
+  stylesheets: [
+    {
+      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
+      type: 'text/css',
+      integrity:
+        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
+      crossorigin: 'anonymous',
+    },
+  ],
   i18n: {
     defaultLocale: 'zh-CN',
     locales: ['zh-CN'],
@@ -271,6 +285,6 @@ const config = {
       },
     },
   },
-}
+};
 
-module.exports = config
+module.exports = config;
