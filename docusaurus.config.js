@@ -7,7 +7,7 @@ const announcementBarContent = ''
 module.exports = async function createConfigAsync() {
   return {
     title: 'Kaesar',
-    url: 'https://zxuqian.cn',
+    url: 'https://qzlu-cyber.netlify.app',
     baseUrl: '/',
     favicon: 'img/favicon.ico',
     organizationName: 'qzlu-cyber',
@@ -142,6 +142,14 @@ module.exports = async function createConfigAsync() {
       tableOfContents: {
         minHeadingLevel: 2,
         maxHeadingLevel: 4,
+      },
+      algolia: {
+        appId: 'Y742U39Z28',
+        apiKey: 'f515b0343c011f23ea4d3de4f86aeb0c',
+        indexName: 'qzlu-cyber',
+        insights: true, // Optional, automatically send insights when user interacts with search results
+        container: '### REPLACE ME WITH A CONTAINER (e.g. div) ###',
+        debug: false // Set debug to true if you want to inspect the modal
       },
       zoom: {
         selector: '.markdown :not(em) > img',
