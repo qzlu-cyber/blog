@@ -145,11 +145,8 @@ module.exports = async function createConfigAsync() {
       },
       algolia: {
         appId: 'Y742U39Z28',
-        apiKey: '99e0a0a20f48edf7eb68671cfb8d80cc',
+        apiKey: 'f515b0343c011f23ea4d3de4f86aeb0c',
         indexName: 'qzlu-cyber',
-        insights: true, // Optional, automatically send insights when user interacts with search results
-        container: '### REPLACE ME WITH A CONTAINER (e.g. div) ###',
-        debug: false // Set debug to true if you want to inspect the modal
       },
       zoom: {
         selector: '.markdown :not(em) > img',
