@@ -145,7 +145,7 @@ module.exports = async function createConfigAsync() {
       },
       algolia: {
         appId: 'Y742U39Z28',
-        apiKey: 'f515b0343c011f23ea4d3de4f86aeb0c',
+        apiKey: '99e0a0a20f48edf7eb68671cfb8d80cc',
         indexName: 'qzlu-cyber',
       },
       zoom: {
