@@ -14,6 +14,17 @@ const sidebars = {
       ]
     },
     {
+      label: 'Math',
+      type: 'category',
+      link: {
+        type: 'doc',
+        id: 'note/CPP/cpp-guides'
+      },
+      items: [
+        'note/math/3DMath',
+      ]
+    },
+    {
       label: '杂项',
       type: 'category',
       link: {
