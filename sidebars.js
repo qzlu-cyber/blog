@@ -11,6 +11,7 @@ const sidebars = {
       },
       items: [
         'note/CPP/cpp-bind',
+        'note/CPP/bagu',
       ]
     },
     {
