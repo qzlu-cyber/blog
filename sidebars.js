@@ -19,7 +19,7 @@ const sidebars = {
       type: 'category',
       link: {
         type: 'doc',
-        id: 'note/CG'
+        id: 'note/CPP/cpp-guides'
       },
       items: [
         'note/CG/bagu',
