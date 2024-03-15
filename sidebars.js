@@ -15,6 +15,17 @@ const sidebars = {
       ]
     },
     {
+      label: '图形学',
+      type: 'category',
+      link: {
+        type: 'doc',
+        id: 'note/CG'
+      },
+      items: [
+        'note/CG/bagu',
+      ]
+    },
+    {
       label: 'Math',
       type: 'category',
       link: {
