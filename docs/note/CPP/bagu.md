@@ -39,7 +39,42 @@
 
 - **在基类的构造函数和析构函数中调用虚函数会怎么样？**
 
-  答：从语法上讲，调用没有问题，但是从效果上看，往往不能达到需要的目的（不能实现多态）；因为调用构造函数的时候，是先进行父类成分的构造，再进行子类的构造。在父类构造期间，子类的特有成分还没有被初化，如果虚函数依赖于子类特有的成员变量或状态，使用这些尚未初始化的数据一定会出错；同理，调用析构函数的时候，先对子类的成分进行析构，当进入父类的析构函数的时候，子类的特有成分已经销毁，此时是无法再调用虚函数实现多态的。
+  答：从语法上讲，调用没有问题，但是从效果上看，往往不能达到需要的目的（不能实现多态）；因为调用构造函数的时候，是先进行父类成分的构造，再进行子类的构造。在父类构造期间，子类的特有成分还没有被初化，C++会避免潜在的对未完全构造对象的非法访问，因此不会调用派生类中的虚函数实现；同理，调用析构函数的时候，先对子类的成分进行析构，当进入父类的析构函数的时候，子类的特有成分已经销毁，此时是无法再调用虚函数实现多态的。
+  ```c++
+  class Base {
+  public:
+    Base() { func1(); }
+
+    virtual void func1() { std::cout << "Base init\n"; }
+    virtual void func2() { std::cout << "Base destroy!\n"; }
+
+    virtual ~Base() { func2(); }
+  };
+
+  class Derived : public Base {
+  public:
+      Derived() : member(3) {}
+
+      void func1() override { std::cout << "Derived init, member is " << member << "\n"; }
+      virtual void func2() override { std::cout << "Derived deatroy, member is " << member << "\n"; }
+
+      ~Derived() { func2(); }
+
+  private:
+      int member;
+  };
+
+  int main() {
+      Derived d;
+      
+      // 输出结果：
+      // Base init
+      // Derived deatroy, member is 3
+      // Base destroy!
+
+      return 0;
+  }
+  ```
 
 - **父类的构造函数和析构函数是否能为虚函数？这样操作导致的结果？**
 
@@ -552,6 +587,11 @@
 - **`const`的四种作用**
 
   1. const 修饰局部变量或全局变量，初始化后不能更改
+    - `const` 修饰的常量怎样更改它的值？
+      ```c++
+      const int a = 1;
+      int* ptr = (int*)(&a);
+      ```
   2. const 修饰函数的参数，为了避免该参数被修改
   3. const 修饰函数返回值，说明函数的返回类型是 const 的，则返回值不能被修改
   4. const 修饰类的方法，则不能修改其成员变量的值
@@ -1282,6 +1322,48 @@
 #### 3.3 对象池思想
 
 答：对于那些需要频繁创建和销毁的对象，对象池的思想是，首先从对象池中寻找有没有可用的对象，如果没有，就创建对象来使用，然后当一个对象不使用的时候，不是把它删除，而是将它设置为不激活的状态并放入对象池中，等待需要使用的时候再去对象池中寻找，并把它激活。
+
+#### 3.4 函数调用具体过程
+
+```c++
+ 1 #include <stdio.h>
+ 2 
+ 3 int func(int param1, int param2, int param3)
+ 4 {
+ 5     int var1 = param1;
+ 6     int var2 = param2;
+ 7     int var3 = param3;
+ 8  
+ 9     printf("var1 = %d, var2 = %d, var3 = %d", var1, var2, var3);
+10     return var1;
+11 }
+12  
+13 int main(int argc, char* argv[])
+14 {
+15     int result = func(1,2,3);
+16  
+17     return 0; 
+18 }
+```
+
+答：ESP：堆栈指针寄存器，指向堆栈顶部；EBP：基址指针寄存器，指向当前堆栈底部。
+1. 函数main执行，main各个参数从右向左逐步压入栈中，最后压入返回地址；
+
+   <img src="https://cdn.jsdelivr.net/gh/qzlu-cyber/PicgoLib@main/images/202404071103818.png" style="zoom:70%"/>
+
+2. 第3行函数调用时，通过跳转指令进入函数后，函数地址入栈后，EBP入栈，然后把当前ESP的值给EBP，此时栈顶和栈底指向同一位置；
+
+   <img src="https://cdn.jsdelivr.net/gh/qzlu-cyber/PicgoLib@main/images/202404071104986.png" style="zoom:70%"/>
+
+3. 第5行开始执行，`int var1 = param1; int var2 = param2; int var3 = param3;`按申明顺序依次存储；
+
+   <img src="https://cdn.jsdelivr.net/gh/qzlu-cyber/PicgoLib@main/images/202404071107388.png" style="zoom:70%"/>
+
+   将`[EBP+0x8]`地址里的内容赋给`EAX`，即把 `param` 的值赋给`EAX`，然后把`EAX`的中的值放到`[EBP-4]`这个地址里，即把`EAX`值赋给`var1`，完成C代码 `int var1 = param1`，其他变量雷同；
+
+4. 第9行，输出结果，最后通过`EAX`寄存器保存函数的返回值；
+
+5. 调用执行函数完毕，局部变量`var3，var2，var1`依次出栈，`EBP`恢复原值，返回地址出栈，找到原执行地址，`param1，param2，param3`依次出栈，函数调用执行完毕。
 
 ### 计算机网络
 
