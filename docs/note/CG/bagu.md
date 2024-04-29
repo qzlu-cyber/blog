@@ -127,11 +127,13 @@
 
    - **如何确定使用哪一层的Mipmap？**
 
-     计算一个像素与其所覆盖的纹理区域的面积比例（取x,y方向上的最大缩放值），由此选定mipmap层
+     利用屏幕像素的相邻像素点估算footprint大小再确定level等级。
 
-     `float lod = 0.5 * log2(max(dot(px, px), dot(py, py)));` 
+     <img src="https://cdn.jsdelivr.net/gh/qzlu-cyber/PicgoLib@main/images/202404282151433.png" style="zoom: 70%" />
 
-     `px`和`py`分别是沿x轴和y轴的纹理坐标变化量（通过`dFdx(uv)`和`dFdy(uv)`计算得出）。`dot(px, px)`和`dot(py, py)`计算的是这些变化量的长度的平方，用于估计纹理变形的程度。然后，取这两个值中的最大值，通过`log2`函数计算出应选择的Mipmap级别。当纹理被映射到较远或较小的表面时，相邻像素间的`uv`跨度会增加，意味着需要使用更低分辨率的纹理级别来减少走样和提高渲染效率。相反，当纹理映射到较近或较大的表面时，`uv`跨度较小，这时候使用更高分辨率的纹理级别可以获得更清晰的图像。
+     <img src="https://cdn.jsdelivr.net/gh/qzlu-cyber/PicgoLib@main/images/202404282152176.png" style="zoom: 70%" />
+
+     在屏幕空间中取当前像素点的右方和上方的两个相邻像素点(4个全取也可以)，分别查询得到这 3 个点对应在 Texture space 的坐标，计算出当前像素点与右方像素点和上方像素点在 Texture space 的距离，二者取最大值，计算公式如图中所示，那么 levelD 就是这个距离的 log2 值
 
 8. **FBO**
 
